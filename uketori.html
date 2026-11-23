@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AIで作った資料の受け取り方・返し方 ── 上司のための1枚</title>
-<meta name="description" content="部下がAIで作った資料を受け取る時に、直さずに問いで返すための1枚です。">
+<meta name="description" content="部下がAIで作った資料を受け取った時に、見る・問いで返す・決めるを2分で済ませるための1枚です。">
 <link rel="icon" href="icons/rashinban/favicon.png" type="image/png" sizes="64x64">
 <link rel="apple-touch-icon" href="icons/rashinban/apple-touch-icon.png">
 <link rel="manifest" href="icons/uketori.webmanifest">
@@ -21,17 +21,17 @@
 /* ──────────────────────────────────────────────────────────
    AIで作った資料の受け取り方・返し方 ── 上司のための1枚
    1ファイル・通信ゼロ・外部読み込みなし・スクリプトなし。
-   色と組み方は #24 の「AIエージェント利用ガイド」にそろえる。
-   画面では濃紺、印刷では白地に切り替わる（@media print）。
+   机で使う道具に絞る：見る → 問いで返す → 決める → 部下に渡す。
+   「なぜ」の説明は記事 #43 に任せ、ここには置かない。
+   印刷すると白地の A4 1枚（判定は ../検査_成果物.py）。
    ────────────────────────────────────────────────────────── */
 :root{
-  --bg:#0a0f1c; --bg-2:#111a2f;
+  --bg:#0a0f1c;
   --ink:#eaf3ff; --muted:#a9bfd6; --dim:#a1b5ca;
-  --accent:#6ecbff; --accent-2:#9adcff;
+  --accent:#6ecbff;
   --A:#6ecbff; --A-bg:rgba(110,203,255,.12);
-  --B:#b5dc78; --B-bg:rgba(181,220,120,.12);
+  --B:#ffd591; --B-bg:rgba(255,213,145,.10);
   --C:#ff9484; --C-bg:rgba(255,148,132,.12);
-  --warn:#ffd591;
   --card:rgba(255,255,255,.055);
   --line:rgba(255,255,255,.13); --line-2:rgba(110,203,255,.35);
   --navy:#14213d;
@@ -46,94 +46,125 @@ body{
     linear-gradient(158deg,#1b2742 0%,#111a2f 48%,#090e1a 100%);
   background-repeat:no-repeat;background-size:100% 100%;
   font-family:"Yu Gothic UI","Yu Gothic","Hiragino Sans","Meiryo",system-ui,sans-serif;
-  font-size:16px;line-height:1.85;-webkit-font-smoothing:antialiased;
+  font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:960px;margin:0 auto;padding:36px 22px 80px}
+.wrap{max-width:900px;margin:0 auto;padding:32px 20px 64px}
 b,strong{color:#fff}
-.ph{background:rgba(255,213,145,.18);border-bottom:1px dashed var(--warn);color:var(--warn);padding:0 3px;border-radius:3px}
+.ph{background:rgba(255,213,145,.18);border-bottom:1px dashed var(--B);color:var(--B);padding:0 3px;border-radius:3px}
 
-header{padding:10px 0 24px;border-bottom:1px solid var(--line-2);margin-bottom:30px}
-.eyebrow{color:var(--muted);font-size:13px;letter-spacing:.16em}
-h1{font-size:34px;line-height:1.3;margin:8px 0 6px;letter-spacing:.02em;font-weight:800;text-shadow:0 8px 34px rgba(0,0,0,.6)}
-h1 .em{background:linear-gradient(180deg,#fff 10%,#8ecdff 95%);-webkit-background-clip:text;background-clip:text;color:transparent}
+header{padding:6px 0 18px;border-bottom:1px solid var(--line-2);margin-bottom:18px}
+.eyebrow{color:var(--muted);font-size:13px;letter-spacing:.12em}
+h1{font-size:30px;line-height:1.3;margin:6px 0 6px;font-weight:800}
+h1 .em{color:#8ecdff}
 .lead{color:var(--muted);font-size:15px;margin:0}
-.meta{color:var(--dim);font-size:12.5px;margin-top:14px}
-.meta span{margin-right:16px}
+.lead b{color:var(--ink)}
+.meta{color:var(--dim);font-size:12px;margin-top:8px}
 
-/* 冒頭の2行：返し方と、引く線 */
-.creed{margin:0 0 34px;padding:24px 26px 20px;border-radius:18px;background:var(--navy);border:1px solid var(--line-2);box-shadow:0 0 44px rgba(92,194,255,.16)}
-.creed .row{display:grid;grid-template-columns:7.5em 1fr;gap:6px 18px;align-items:baseline;margin:0 0 12px}
-.creed .lab{font-size:14px;color:var(--muted);font-weight:700}
-.creed .big{font-size:22px;font-weight:800;line-height:1.4}
-.creed .big .to{background:var(--accent);color:#08131f;padding:2px 12px;border-radius:999px}
-.creed .sub{grid-column:2;color:var(--muted);font-size:14px;line-height:1.6}
-@media (max-width:720px){.creed{padding:20px 18px 16px}.creed .row{grid-template-columns:1fr;gap:2px}.creed .sub{grid-column:1}.creed .big{font-size:19px}}
+/* 2つの決まり */
+.rule{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 26px}
+.rule div{padding:10px 14px;border-radius:12px;background:var(--navy);border:1px solid var(--line-2);font-size:14px;line-height:1.5;color:var(--muted)}
+.rule .k{display:block;font-size:12px;font-weight:800;letter-spacing:.14em;color:var(--accent)}
+.rule b{font-size:17px}
 
-section{margin:0 0 48px}
-h2{font-size:22px;font-weight:700;letter-spacing:.04em;margin:0 0 16px;padding-bottom:10px;border-bottom:1px solid var(--line-2)}
-h2 .n{color:var(--accent);font-size:15px;letter-spacing:.2em;margin-right:12px;vertical-align:2px}
-p{margin:0 0 14px}
-ul{padding-left:1.3em;margin:0 0 14px}
-li{margin:4px 0}
-.note{color:var(--muted);font-size:13.5px;border-left:3px solid var(--line-2);padding:4px 14px;margin:16px 0}
+section{margin:0 0 28px}
+h2{font-size:19px;font-weight:800;margin:0 0 10px;display:flex;align-items:baseline;gap:10px}
+h2 .n{flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#08131f;font-size:15px;display:inline-flex;align-items:center;justify-content:center;transform:translateY(3px)}
+h2 .s{font-size:14px;font-weight:700;color:var(--muted)}
+.tip{color:var(--muted);font-size:14px;margin:8px 0 0}
+.tip b{color:var(--ink)}
 
-/* 5つの問い */
-.qs{counter-reset:q;list-style:none;padding:0;margin:0}
-.qs li{counter-increment:q;position:relative;padding:14px 18px 14px 66px;margin:10px 0;background:var(--card);border:1px solid var(--line);border-radius:12px}
-.qs li::before{content:counter(q);position:absolute;left:16px;top:14px;width:36px;height:36px;border-radius:50%;background:var(--accent);color:#08131f;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:17px}
-.qs .t{font-size:19px;font-weight:800;line-height:1.45}
-.qs .d{color:var(--muted);font-size:14px;line-height:1.6;margin-top:4px}
+/* 1 見る：合図と問い */
+.tbl{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.tbl > div{padding:9px 14px;border-top:1px solid var(--line)}
+.tbl .th{border-top:0;background:var(--navy);font-size:12.5px;font-weight:800;letter-spacing:.1em;color:var(--muted)}
+.tbl .sig{font-size:14.5px;color:var(--muted);background:var(--card)}
+.tbl .q{font-size:17px;font-weight:800;line-height:1.45}
+.say{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:10px 0 0;font-size:14px;line-height:1.55}
+.say .k{font-size:12px;font-weight:800;letter-spacing:.1em;padding-top:2px}
+.say .ok{color:var(--A)} .say .ng{color:var(--C)}
 
-/* やりがちな3つ */
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
-.card.C{border-color:var(--C);background:var(--C-bg)}
-.card.B{border-color:var(--B);background:var(--B-bg)}
-.card .t{font-size:17px;font-weight:800;line-height:1.4}
-.card.C .t{color:var(--C)} .card.B .t{color:var(--B)}
-.card .d{color:var(--muted);font-size:14px;line-height:1.6;margin-top:6px}
-.card .d b{color:var(--ink)}
-@media (max-width:820px){.grid3{grid-template-columns:1fr}}
+/* 2 決める */
+.judge{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.j{padding:12px 14px;border-radius:12px;border:1px solid}
+.j.A{border-color:var(--A);background:var(--A-bg)}
+.j.B{border-color:var(--B);background:var(--B-bg)}
+.j.C{border-color:var(--C);background:var(--C-bg)}
+.j .jt{font-size:19px;font-weight:800;line-height:1.3}
+.j.A .jt{color:var(--A)} .j.B .jt{color:var(--B)} .j.C .jt{color:var(--C)}
+.j .jc{font-size:13.5px;color:var(--muted);margin-top:4px;line-height:1.5}
+.j .jn{font-size:14.5px;font-weight:700;margin-top:6px;line-height:1.5}
 
-/* 言い方の例 */
-.say{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.say div{padding:12px 16px;border-radius:12px;font-size:15px;line-height:1.6}
-.say .ok{background:var(--A-bg);border:1px solid var(--A)}
-.say .ng{background:var(--C-bg);border:1px solid var(--C)}
-.say .k{display:block;font-size:12px;font-weight:800;letter-spacing:.12em;margin-bottom:2px}
-.say .ok .k{color:var(--A)} .say .ng .k{color:var(--C)}
-@media (max-width:720px){.say{grid-template-columns:1fr}}
+/* 3 渡す：切り取り線の中 */
+.cut{position:relative;padding:14px 18px 12px;border:2px dashed var(--line-2);border-radius:6px}
+.cut::before{content:"\2702  切り取り線";position:absolute;top:-11px;left:14px;padding:0 6px;background:#101829;color:var(--muted);font-size:12px;letter-spacing:.08em}
+.cut .ct{font-weight:800;font-size:16px;margin-bottom:6px}
+.cut ol{margin:0;padding-left:1.4em}
+.cut li{margin:3px 0;font-size:15px}
+.cut li span{color:var(--muted);font-size:13.5px;margin-left:.6em}
+.cut .cf{margin-top:8px;font-size:13px;color:var(--muted)}
 
-/* 育て方の3周 */
-.laps{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.lap{padding:14px 16px 12px;border-radius:14px;background:var(--card);border:1px solid var(--line)}
-.lap .n{font-size:12.5px;color:var(--accent);font-weight:800;letter-spacing:.2em}
-.lap .t{font-size:17px;font-weight:800;margin-top:4px;line-height:1.4}
-.lap .d{font-size:14px;color:var(--muted);margin-top:6px;line-height:1.6}
-.lap.l3{border-color:var(--A);box-shadow:0 0 26px rgba(92,194,255,.16)}
-@media (max-width:820px){.laps{grid-template-columns:1fr}}
-
-/* 部下に渡す3つ */
-.hand{padding:18px 22px;border-radius:14px;background:var(--navy);border:1px solid var(--line-2)}
-.hand .t{font-weight:800;font-size:17px;margin-bottom:8px}
-.hand ol{margin:0;padding-left:1.4em}
-.hand li{margin:6px 0}
-.hand li b{color:var(--warn)}
-
-footer{margin-top:56px;padding-top:16px;border-top:1px solid var(--line);color:var(--dim);font-size:12.5px;line-height:1.7}
+footer{margin-top:34px;padding-top:12px;border-top:1px solid var(--line);color:var(--dim);font-size:12px;line-height:1.65}
 footer a{color:var(--accent)}
 
+/* 短い句は言葉の途中で折らない（読点・句点・空白でだけ折る。収まらない時だけどこでも） */
+.eyebrow,.q,.rule b,.say span,.tip,.j .jc,.j .jn,.cut li b,.cut li span{word-break:keep-all;overflow-wrap:anywhere}
+.nw{white-space:nowrap}
+
+@media (max-width:640px){
+  h1{font-size:25px}
+  .rule{grid-template-columns:1fr}
+  .tbl{grid-template-columns:1fr}
+  .tbl .th{display:none}
+  .tbl .sig{border-top:1px solid var(--line);font-size:13.5px;padding:8px 14px 2px}
+  .tbl .th + .th + .sig{border-top:0}
+  .tbl .sig::before{content:"気づいたら ";font-weight:800;font-size:11.5px;letter-spacing:.08em;color:var(--dim)}
+  .tbl .q{border-top:0;padding:2px 14px 10px;background:var(--card)}
+  .judge{grid-template-columns:1fr}
+  .cut li span{display:block;margin-left:0}
+}
+
+@page{size:A4;margin:10mm}
 @media print{
-  :root{--bg:#fff;--ink:#1c2430;--muted:#4a5568;--dim:#6b7a8c;--accent:#0b6e8f;--accent-2:#0b6e8f;
-    --A:#0b6e8f;--A-bg:#e6f4f8;--B:#5b6b1f;--B-bg:#eef3dc;--C:#b4432f;--C-bg:#fbe9e5;--warn:#8a5a00;
-    --card:#f8fafc;--line:#c9d3df;--line-2:#0b6e8f;--navy:#eef3f8}
-  body{background:#fff;color:var(--ink);font-size:10.5pt}
+  :root{--ink:#1c2430;--muted:#4a5568;--dim:#6b7a8c;--accent:#0b6e8f;
+    --A:#0b6e8f;--A-bg:#eaf5f9;--B:#8a5a00;--B-bg:#fdf5e4;--C:#b4432f;--C-bg:#fbece8;
+    --card:#f6f8fb;--line:#c9d3df;--line-2:#0b6e8f;--navy:#eef3f8}
+  body{background:#fff;color:var(--ink);font-size:9.5pt;line-height:1.55}
   b,strong{color:#14213d}
-  h1{text-shadow:none;color:#14213d} h1 .em{background:none;-webkit-text-fill-color:#0b6e8f;color:#0b6e8f}
-  .creed{box-shadow:none} .creed .big .to{color:#fff}
-  .lap.l3{box-shadow:none}
-  .wrap{padding:0}
-  section,.qs li,.card,.lap,.hand{break-inside:avoid}
+  .wrap{padding:0;max-width:none}
+  header{padding:0 0 3mm;margin-bottom:3mm}
+  .eyebrow{font-size:8pt}
+  h1{font-size:17pt;margin:1mm 0}
+  h1 .em{color:#0b6e8f}
+  .lead{font-size:9.5pt}
+  .meta{font-size:7.5pt;margin-top:1mm}
+  .rule{margin-bottom:4mm;gap:3mm}
+  .rule div{padding:2mm 3mm;font-size:8.5pt}
+  .rule .k{font-size:7pt}
+  .rule b{font-size:11pt}
+  section{margin-bottom:4.5mm;break-inside:avoid}
+  h2{font-size:12pt;margin-bottom:2mm}
+  h2 .n{width:6mm;height:6mm;font-size:9.5pt;background:none;border:1.2pt solid #0b6e8f;color:#0b6e8f;transform:translateY(1mm)}
+  h2 .s{font-size:9pt}
+  .tbl > div{padding:1.6mm 3mm}
+  .tbl .th{font-size:7.5pt}
+  .tbl .sig{font-size:9pt}
+  .tbl .q{font-size:11pt}
+  .say{font-size:8.5pt;margin-top:2mm}
+  .say .k{font-size:7.5pt}
+  .tip{font-size:8.5pt;margin-top:2mm}
+  .judge{gap:3mm}
+  .j{padding:2.5mm 3mm}
+  .j .jt{font-size:12pt}
+  .j .jc{font-size:8.5pt}
+  .j .jn{font-size:9pt}
+  .cut{padding:3.5mm 4mm 3mm}
+  .cut::before{background:#fff;font-size:7.5pt;top:-2.2mm}
+  .cut .ct{font-size:10.5pt;margin-bottom:1mm}
+  .cut li{font-size:9.5pt;margin:.6mm 0}
+  .cut li span{font-size:8.5pt}
+  .cut .cf{font-size:8.5pt;margin-top:1.5mm}
+  footer{margin-top:4mm;padding-top:2mm;font-size:7pt;line-height:1.5}
+  footer a{color:#0b6e8f;text-decoration:none}
 }
 </style>
 </head>
@@ -143,94 +174,59 @@ footer a{color:var(--accent)}
 <header>
   <div class="eyebrow">上司のための1枚 ── 部下がAIで作った資料を、受け取る時に</div>
   <h1>AIで作った資料の<br><span class="em">受け取り方・返し方</span></h1>
-  <p class="lead">見た目は整っているのに、中身が分からない資料が届いた時に使います。机の横に置いて、受け取るたびに開いてください。</p>
-  <div class="meta"><span>Version 1.0</span><span>2026年11月</span><span>※ <span class="ph">【 】</span> は自社に合わせて書き換えてください</span></div>
+  <p class="lead">受け取ったら、<b>1 見る → 2 決める → 3 渡す</b>。2分で使う1枚です。机の横に置いてください。</p>
+  <div class="meta">Version 2.0 ／ 2026年11月 ／ ※ <span class="ph">【 】</span> は自社に合わせて書き換えてください</div>
 </header>
 
-<div class="creed">
-  <div class="row"><div class="lab">返し方は1つ</div>
-    <div class="big">中身を直さずに、<span class="to">問いで返す</span></div>
-    <div class="sub">直してあげると、部下が判断を学ぶ機会がなくなり、後始末の時間を払い続けるのはあなたになります。</div></div>
-  <div class="row"><div class="lab">引く線は1本</div>
-    <div class="big">AIが書いても、中身の責任は、出した人のもの</div>
-    <div class="sub">ただし、AIを使ったこと自体は責めません。責めると、使ったことを隠すようになります。</div></div>
+<div class="rule">
+  <div><span class="k">返し方は1つ</span><b>中身を直さずに、問いで返す</b></div>
+  <div><span class="k">引く線は1本</span><b>中身の責任は、出した人のもの</b><br>AIを使ったこと自体は、責めない</div>
 </div>
 
 <section id="s1">
-  <h2><span class="n">01</span>受け取る時の、5つの問い</h2>
-  <p>全部を毎回聞く必要はありません。資料に合わせて、どれか1つか2つを投げてみてください。</p>
-  <ol class="qs">
-    <li><div class="t">結論を、口頭で30秒で言うと？</div>
-      <div class="d">画面を見ずに話せるかを聞きます。話せないなら、まだ本人の物になっていません。分かるまでAIに説明させるよう勧めます。</div></li>
-    <li><div class="t">この数字は、どこから？</div>
-      <div class="d">AIは、知らないところまで、もっともらしく埋めます。数字・人や会社の名前・引用・日付の4つは、出どころを開いて確かめたかを聞きます。</div></li>
-    <li><div class="t">AIに任せた所と、自分で確かめた所は、どこ？</div>
-      <div class="d">確かめた範囲が分かれば、あなたが読むべき所も分かります。「まだ確かめていない」と言えることを、ほめてください。</div></li>
-    <li><div class="t">これが間違っていたら、誰が気づく？</div>
-      <div class="d">「私が気づく」なら確かめた。「私の責任」なら決めた。「誰も気づかない」なら、出す前に止める。</div></li>
-    <li><div class="t">読む人は誰で、その人に何をしてほしい？</div>
-      <div class="d">目的がはっきりすると、要らない見出しや飾りが削れます。資料は短くなるのが普通です。</div></li>
-  </ol>
-  <p class="note">答えられたら、資料は直せます。答えられなければ、それが部下の次に身に付けることです。</p>
+  <h2><span class="n">1</span>見る<span class="s">当てはまったら、その問いを返す</span></h2>
+  <div class="tbl">
+    <div class="th">見て、気づいたら</div><div class="th">返す問い（このまま言う）</div>
+    <div class="sig">1行目に、結論が無い</div><div class="q">「結論を、口頭で30秒で言うと？」</div>
+    <div class="sig">数字・名前・引用・日付に、出どころが無い</div><div class="q">「この数字は、どこから？」</div>
+    <div class="sig">どこまで確かめたかが、書いていない</div><div class="q">「AIに任せた所と、自分で確かめた所は、どこ？」</div>
+    <div class="sig">社外・お金・人に関わる</div><div class="q">「これが間違っていたら、誰が気づく？」</div>
+    <div class="sig">長い・誰に向けた資料か分からない</div><div class="q">「読む人は誰で、その人に何をしてほしい？」</div>
+  </div>
+  <div class="say">
+    <span class="k ok">こう入る</span><span>「よくまとまってるね。」から。返す問いは、<span class="nw">1〜2問まで</span></span>
+    <span class="k ng">しない</span><span>「これ、AIで作ったでしょ」／黙って自分で直す／「AIに聞けば分かるよ」</span>
+  </div>
+  <p class="tip">1つも当てはまらなければ、そのまま受ける。</p>
 </section>
 
 <section id="s2">
-  <h2><span class="n">02</span>やりがちな、3つの逆効果</h2>
-  <div class="grid3">
-    <div class="card C"><div class="t">AIを禁止する</div>
-      <div class="d">部下は隠れて使うだけです。隠れて使われたAIほど、<b>確かめようがありません</b>。</div></div>
-    <div class="card C"><div class="t">自分で直してあげる</div>
-      <div class="d">その場は早く済みます。でも、部下が判断を学ぶ機会を奪い、<b>後始末を払い続けるのはあなた</b>です。</div></div>
-    <div class="card C"><div class="t">「AIに聞いてみて」と返す</div>
-      <div class="d">育てる会話を、AIへの相談に置きかえない。<b>指導の会話そのものは、人がする</b>。AIは、その準備に使います。</div></div>
+  <h2><span class="n">2</span>決める<span class="s">答えを聞いて</span></h2>
+  <div class="judge">
+    <div class="j A"><div class="jt">受ける</div><div class="jc">全部、答えられた</div>
+      <div class="jn">確かめた所と、まだの所を、1行添えて出してもらう</div></div>
+    <div class="j B"><div class="jt">もう一度</div><div class="jc">答えに詰まった問いがある</div>
+      <div class="jn">その問いだけ持ち帰ってもらう。直すのは部下。期限を決める</div></div>
+    <div class="j C"><div class="jt">止める</div><div class="jc">「誰も気づかない」「出どころを開けない」のまま、社外・お金・人に関わる</div>
+      <div class="jn">確かめ終わるまで、外へ出さない</div></div>
   </div>
 </section>
 
 <section id="s3">
-  <h2><span class="n">03</span>返す時の言い方</h2>
-  <div class="say">
-    <div class="ok"><span class="k">こう返す</span>「よくまとまってるね。結論を30秒で聞かせて」</div>
-    <div class="ng"><span class="k">こう返さない</span>「これ、AIで作ったでしょ」</div>
-    <div class="ok"><span class="k">こう返す</span>「この数字の出どころを、資料の下に1行足してくれる？」</div>
-    <div class="ng"><span class="k">こう返さない</span>（黙って自分で数字を直す）</div>
-    <div class="ok"><span class="k">こう返す</span>「AIに任せた所に、印を付けてみて。まだの所は『まだ』で大丈夫」</div>
-    <div class="ng"><span class="k">こう返さない</span>「AIに聞けば分かるよ」</div>
-  </div>
-  <p class="note">「AIで作りました、ここは確かめて、ここはまだです」と言える空気の方が、ずっと安全です。</p>
-</section>
-
-<section id="s4">
-  <h2><span class="n">04</span>育て方 ── 3周で、問いを部下に渡す</h2>
-  <div class="laps">
-    <div class="lap"><div class="n">1 周目</div><div class="t">一緒に、問いに答える</div>
-      <div class="d">受け取った資料を前に、5つの問いを1つずつ一緒に確かめます。直すのは部下です。</div></div>
-    <div class="lap"><div class="n">2 周目</div><div class="t">問いを、先に渡す</div>
-      <div class="d">「出す前に、この5つに自分で答えてから持ってきて」。あなたは答えを確かめるだけになります。</div></div>
-    <div class="lap l3"><div class="n">3 周目</div><div class="t">部下が、問いを足す</div>
-      <div class="d">「この資料なら、ここも聞かれると思って確かめました」と言えたら、判断できる側に立っています。</div></div>
-  </div>
-</section>
-
-<section id="s5">
-  <h2><span class="n">05</span>部下に渡す、出す前の3つ</h2>
-  <div class="hand">
-    <div class="t">AIを使った資料を出す前に（このまま部下に渡してください）</div>
+  <h2><span class="n">3</span>渡す<span class="s">切り取って、部下に</span></h2>
+  <div class="cut">
+    <div class="ct">AIを使った資料を、出す前に</div>
     <ol>
-      <li><b>AIに聞く前に、自分の答えを1行書く。</b>当てずっぽうでよい。AIの答えとの違いが、確かめどころ。</li>
-      <li><b>口で30秒、説明できないものは出さない。</b>話せないなら、分かるまでAIに説明させる。</li>
-      <li><b>数字と名前は、元に当たる。</b>数字・人や会社の名前・引用・日付の4つだけは、出どころを開く。</li>
+      <li><b>AIに聞く前に、自分の答えを1行書く</b><span>AIの答えとの違いが、確かめどころ</span></li>
+      <li><b>口で30秒、説明できないものは出さない</b><span>話せるまで、AIに説明させる</span></li>
+      <li><b>数字・名前・引用・日付は、出どころを開く</b><span>ここだけは、元に当たる</span></li>
     </ol>
+    <div class="cf">迷ったら：<span class="ph">【部署名・担当者名】</span></div>
   </div>
+  <p class="tip">慣れてきたら、1の5つの問いも先に渡す（「自分で答えてから持ってきて」）。<b>自分が出す資料も、同じ5つで確かめてから。</b></p>
 </section>
 
-<section id="s6">
-  <h2><span class="n">06</span>あなた自身の資料にも</h2>
-  <p>中身のないAIの資料は、部下からだけ届くわけではありません。上司が送るものは、部下から「これは中身がありません」とは言いにくく、もっと厄介です。</p>
-  <p>報告書や、部下への指示文をAIに書かせた時は、<b>この5つの問いを、まず自分に</b>投げてから出してください。</p>
-  <p class="note">迷った時の相談先：<span class="ph">【部署名・担当者名】</span></p>
-</section>
-
-<footer>本資料は「AI内製化工房 MITA」の連載「AI内製化の羅針盤」#43（部下のAI資料にうんざりしている方へ）の考え方に基づいています。<br>1ファイル・通信ゼロ・外部読み込みなし・スクリプトなし。印刷すると白地に切り替わります。<br><b>ご利用にあたって</b>：本資料のご利用は自己責任でお願いします。内容は作成時点の公開情報に基づくもので、正確さや最新であることを保証するものではありません。作成者の故意または重大な過失による場合を除き、本資料の利用により生じた損害について作成者が負う責任は、直接かつ通常の損害の範囲に限ります。社内での改変・配布は自由です（その際は出典として「AI内製化工房 MITA」の記載をお願いします）。著作権は作成者に帰属します。<br><a href="https://ai-naiseika.github.io/">制作：AI内製化工房 MITA ›</a></footer>
+<footer>「なぜ問いで返すのか」は、連載「AI内製化の羅針盤」#43（部下のAI資料にうんざりしている方へ）に書いています。<br>1ファイル・通信ゼロ・外部読み込みなし・スクリプトなし。印刷すると白地の A4 1枚になります。<br><b>ご利用にあたって</b>：本資料のご利用は自己責任でお願いします。内容は作成時点の公開情報に基づくもので、正確さや最新であることを保証するものではありません。作成者の故意または重大な過失による場合を除き、本資料の利用により生じた損害について作成者が負う責任は、直接かつ通常の損害の範囲に限ります。社内での改変・配布は自由です（その際は出典として「AI内製化工房 MITA」の記載をお願いします）。著作権は作成者に帰属します。<br><a href="https://ai-naiseika.github.io/">制作：AI内製化工房 MITA ›</a></footer>
 
 </div>
 </body>
