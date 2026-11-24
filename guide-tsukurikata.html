@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AI利用ガイドの作り方 ── 自社のガイドを、自社で作る</title>
-<meta name="description" content="社員向けのAI利用ガイドを、AIに聞き取りをさせて自社で作るための道具です。指示文・骨組み・配る前の5つのチェックつき。">
+<meta name="description" content="社員向けのAI利用ガイドを、AIに聞き取りをさせて自社で作るための道具です。目的の1行・指示文・骨組みの3段。">
 <link rel="icon" href="icons/rashinban/favicon.png" type="image/png" sizes="64x64">
 <link rel="apple-touch-icon" href="icons/rashinban/apple-touch-icon.png">
 <link rel="manifest" href="icons/guide-tsukurikata.webmanifest">
@@ -22,7 +22,8 @@
    AI利用ガイドの作り方 ── 自社のガイドを、自社で作る
    1ファイル・通信ゼロ・外部読み込みなし。
    スクリプトは末尾の1つだけ（コピーのボタン）。通信も保存もしない。
-   手を動かす順に5段：目的 → 聞き取り → 見比べ → 配る前の5つ → 試す。
+   手を動かす順に3段：目的 → 聞き取り → 骨組みを埋める（2026-11-24 本人：④配る前の5つは要らない。
+   【 】が埋まっていなければ配らない。育て方は社風や規模に合わせて柔軟に）。
    「なぜ」の説明は記事 #43 に任せ、ここには置かない。
    印刷すると白地の A4 2枚まで（判定は ../検査_成果物.py）。
    ────────────────────────────────────────────────────────── */
@@ -82,20 +83,12 @@ p{margin:0 0 8px;font-size:15px}
 .copybox button:hover{background:rgba(110,203,255,.24)}
 .copybox pre{margin:0;padding:12px 14px 14px;white-space:pre-wrap;word-break:break-word;font-family:inherit;font-size:14.5px;line-height:1.7;color:var(--ink)}
 
-/* 配る前の5つ */
-.check{list-style:none;padding:0;margin:4px 0 0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
-.check li{border-top:1px solid var(--line);background:var(--card)}
-.check li:first-child{border-top:0}
-.check label{display:flex;gap:12px;align-items:flex-start;padding:10px 14px;cursor:pointer;font-size:15.5px;line-height:1.5}
-.check input{flex:0 0 auto;width:20px;height:20px;margin:2px 0 0;accent-color:#6ecbff}
-.check small{display:block;color:var(--muted);font-size:13px;margin-top:2px}
-
 .links{margin:0;padding-left:1.2em;font-size:14.5px}
 .links li{margin:4px 0}
 footer{margin-top:34px;padding-top:12px;border-top:1px solid var(--line);color:var(--dim);font-size:12px;line-height:1.65}
 
 /* 短い句は言葉の途中で折らない（読点・句点・空白でだけ折る。収まらない時だけどこでも） */
-.eyebrow,.flow a,.check label > span,.links li{word-break:keep-all;overflow-wrap:anywhere}
+.eyebrow,.flow a,.links li{word-break:keep-all;overflow-wrap:anywhere}
 
 @media (max-width:640px){
   h1{font-size:25px}
@@ -129,10 +122,7 @@ footer{margin-top:34px;padding-top:12px;border-top:1px solid var(--line);color:v
   .copybox button{display:none}
   .copybox pre{font-size:9pt;line-height:1.5;padding:2mm 3mm}
   #frame{column-count:2;column-gap:6mm}
-  .check label{padding:1.6mm 3mm;font-size:9.5pt}
-  .check input{width:3.6mm;height:3.6mm;margin-top:.5mm}
-  .check small{font-size:8pt}
-  .check,.copybox,.warn{break-inside:avoid}
+  .copybox,.warn{break-inside:avoid}
   .links{font-size:8.5pt}
   footer{margin-top:4mm;padding-top:2mm;font-size:7pt;line-height:1.5}
 }
@@ -144,21 +134,19 @@ footer{margin-top:34px;padding-top:12px;border-top:1px solid var(--line);color:v
 <header>
   <div class="eyebrow">自社のAI利用ガイドを、自社で作るための道具</div>
   <h1>AI利用ガイドの作り方<br><span class="em">自社のガイドを、自社で作る</span></h1>
-  <p class="lead">AIに聞き取りをさせて、<b>A4で1枚の下書き</b>を作ります。下の5段を、上から順に。</p>
-  <div class="meta">Version 2.0 ／ 2026年11月 ／ ※ <span class="ph">【 】</span> は自社に合わせて書き換えてください</div>
+  <p class="lead">AIに聞き取りをさせて、<b>A4で1枚のガイド</b>を作ります。下の3段を、上から順に。</p>
+  <div class="meta">Version 3.0 ／ 2026年11月 ／ ※ <span class="ph">【 】</span> は自社に合わせて書き換えてください</div>
 </header>
 
 <ol class="flow">
   <li><a href="#s1">目的を1行書く</a></li>
   <li><a href="#s2">AIに貼って答える</a></li>
-  <li><a href="#s3">骨組みと見比べる</a></li>
-  <li><a href="#s4">配る前の5つ</a></li>
-  <li><a href="#s5">1つの部署で試す</a></li>
+  <li><a href="#s3">骨組みを埋める</a></li>
 </ol>
 
 <section id="s1">
   <h2><span class="n">1</span>目的を1行書く</h2>
-  <p class="do">下の指示文の2行目の <span class="ph">【 】</span> に、何のためにAIを使うのかを1行で書きます。<br>例：資料づくりの時間を減らし、考える時間を増やすため。</p>
+  <p class="do">大切なのは、AIを使うことではなく、<b>使って何を得たいか</b>。<br>下の指示文の2行目の <span class="ph">【 】</span> に、それを1行で書きます。<br>例：資料づくりの時間を減らし、考える時間を増やす。</p>
 </section>
 
 <section id="s2">
@@ -168,7 +156,7 @@ footer{margin-top:34px;padding-top:12px;border-top:1px solid var(--line);color:v
   <div class="copybox">
     <div class="bar"><span class="lab">指示文（そのまま貼る）</span><button type="button" data-copy="prompt">コピー</button></div>
 <pre id="prompt">あなたは、社内のAI利用ガイドを作る手伝いをする聞き取り役です。
-このガイドの目的：【何のためにAIを使うのかを1行で】
+このガイドの目的：【AIを使って、何を得たいかを1行で】
 （目的が【 】のままなら、最初に目的を聞いてください）
 
 これから、私の会社の事情について、質問を1つずつしてください。
@@ -177,7 +165,7 @@ footer{margin-top:34px;padding-top:12px;border-top:1px solid var(--line);color:v
 聞くことは、次の5つです。
 1. 会社で使ってよいAI（契約しているもの）
 2. AIに入れてはいけない情報
-3. AIで作った物を、出す前にどう確かめるか
+3. AIに丸投げしないための使い方と、出す前にどう確かめるか
 4. AIで作った物の責任を、誰が持つか
 5. 迷った時に聞く相手
 
@@ -188,20 +176,21 @@ footer{margin-top:34px;padding-top:12px;border-top:1px solid var(--line);color:v
 ・1行目に目的を置き、決まりは10個までにする
 ・私が答えていないことを、もっともらしく埋めない。分からない所は【 】のまま残す
 ・禁止だけを並べず、どうすればよいかを書く
-・最後に「見直し」の欄を置き、日付は【 】で残す
+・最後に「見直し」の欄を置き、いつ・誰が見直すかは【 】で残す
 ・下書きの後に、私が確かめるべき所を3つ挙げる</pre>
   </div>
 </section>
 
 <section id="s3">
-  <h2><span class="n">3</span>骨組みと見比べる</h2>
-  <p class="do">下書きに、骨組みの「■」が全部あるかを見ます。足りない所は、AIに「■ 5. 迷ったら を足して」と頼むか、手で書きます。AIを使わずに作る時も、この骨組みの <span class="ph">【 】</span> を埋めれば形になります。</p>
+  <h2><span class="n">3</span>骨組みを埋める</h2>
+  <p class="do">AIの下書きを、この骨組みに当てはめます。足りない「■」は、AIに「■ 5. 迷ったら を足して」と頼むか、手で書きます。AIを使わずに作る時も、<span class="ph">【 】</span> を埋めれば形になります。</p>
+  <div class="warn"><b>【 】が1つでも残っていたら、まだ配らない。</b>埋まったら、それが自社のガイドです。</div>
   <div class="copybox">
     <div class="bar"><span class="lab">骨組み（写して使う）</span><button type="button" data-copy="frame">コピー</button></div>
 <pre id="frame">【会社名】 AI利用ガイド　Version 1.0（【作った日】）
 
 ■ 目的
-【何のためにAIを使うのかを1行で】
+【AIを使って、何を得たいかを1行で】
 
 ■ 1. 使ってよいAI
 【会社が契約したAIの名前】だけを使う。個人で契約したAIに、会社の情報を入れない。
@@ -214,37 +203,25 @@ footer{margin-top:34px;padding-top:12px;border-top:1px solid var(--line);color:v
 迷ったら入れない。
 
 ■ 3. 出す前の確かめ方
+丸投げしない。次の3つで、自分の力をつけながら使う。
 ① AIに聞く前に、自分の答えを1行書く
 ② 口で30秒、説明できないものは出さない
 ③ 数字・人や会社の名前・引用・日付は、出どころを開いて確かめる
 
 ■ 4. 中身の責任
-AIが書いても、中身の責任は出した人のもの。
-AIを使ったことは隠さず、確かめた所とまだの所を添えて出す。
+AIで作っても、手で作っても、中身の責任は出した人のもの。
+確かめた所と、まだの所を添えて出す。
 
 ■ 5. 迷ったら
 【部署名・担当者名】に聞く。
 
 ■ 見直し
-【毎月○日】に、困った所だけ書き足す。1枚に収まらなくなったら、足す前に削る。</pre>
+【いつ・誰が】見直す。迷ったら、目的の1行に戻る。</pre>
   </div>
 </section>
 
 <section id="s4">
-  <h2><span class="n">4</span>配る前の5つ</h2>
-  <p class="do">1つでも欠けていたら、まだ配りません。</p>
-  <ul class="check">
-    <li><label><input type="checkbox"><span>【 】が1つも残っていない<small>AIが書いた所も、1行ずつ読んで直した（そのまま通したガイドは、中身のない資料と同じ）</small></span></label></li>
-    <li><label><input type="checkbox"><span>A4で1枚に収まる<small>決まりは10個まで。起きていない心配は書かない</small></span></label></li>
-    <li><label><input type="checkbox"><span>禁止だけで終わらず、「どうすればよいか」が書いてある</span></label></li>
-    <li><label><input type="checkbox"><span>迷った時に聞く人の、部署と名前が入っている</span></label></li>
-    <li><label><input type="checkbox"><span>見直しの日が、決まっている</span></label></li>
-  </ul>
-</section>
-
-<section id="s5">
-  <h2><span class="n">5</span>1つの部署で、1か月試す</h2>
-  <p class="do">いきなり全社に配らない。1つの部署で1か月使ってもらい、困った所をそのつど書き留めてもらう。見直しの日に、<b>困った所だけ</b>書き足す。守るのは、まず上の人から。</p>
+  <p class="do">配った後の育て方は、社風や規模に合わせて、柔軟に。<b>決める時は、いつも目的（AIを使って、何を得たいか）に戻ります。</b></p>
   <ul class="links">
     <li>部下の資料を受け取る側の1枚：<a href="https://ai-naiseika.github.io/guides/uketori.html">AIで作った資料の受け取り方・返し方</a></li>
     <li>出来上がったガイドの一例（#24）：<a href="https://ai-naiseika.github.io/guides/ai-agent-guide.html">AIエージェント利用ガイド</a></li>
