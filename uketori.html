@@ -23,7 +23,8 @@
    1ファイル・通信ゼロ・外部読み込みなし・スクリプトなし。
    机で使う道具に絞る：見る → 決める → 伝える。
    見るのは当たり前のことだけ。何で作ったか（AIか）は問う必要が無い。
-   AIの使い方は会社のガイドに任せ、ここには置かない（2026-11-24 本人）。
+   評価は普段の成果物と同じ。上司なら当たり前のこと（入り方・しないこと）は書かない。
+   AIの使い方は会社のガイドに任せ、見た目だけの資料だと感じた時にそこを指す（2026-11-24 本人）。
    「なぜ」の説明は記事 #43 に任せる。
    印刷すると白地の A4 1枚（判定は ../検査_成果物.py）。
    ────────────────────────────────────────────────────────── */
@@ -71,6 +72,7 @@ h1 .em{color:#8ecdff}
 section{margin:0 0 28px}
 h2{font-size:19px;font-weight:800;margin:0 0 10px;display:flex;align-items:baseline;gap:10px}
 h2 .n{flex:0 0 auto;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#08131f;font-size:15px;display:inline-flex;align-items:center;justify-content:center;transform:translateY(3px)}
+h2 .t{flex:0 0 auto;white-space:nowrap}
 h2 .s{font-size:14px;font-weight:700;color:var(--muted)}
 .tip{color:var(--muted);font-size:14px;margin:8px 0 0}
 .tip b{color:var(--ink)}
@@ -81,9 +83,6 @@ h2 .s{font-size:14px;font-weight:700;color:var(--muted)}
 .tbl .th{border-top:0;background:var(--navy);font-size:12.5px;font-weight:800;letter-spacing:.1em;color:var(--muted)}
 .tbl .sig{font-size:14.5px;color:var(--muted);background:var(--card)}
 .tbl .q{font-size:17px;font-weight:800;line-height:1.45}
-.say{display:grid;grid-template-columns:auto 1fr;gap:4px 12px;margin:10px 0 0;font-size:14px;line-height:1.55}
-.say .k{font-size:12px;font-weight:800;letter-spacing:.1em;padding-top:2px}
-.say .ok{color:var(--A)} .say .ng{color:var(--C)}
 
 /* 2 決める */
 .judge{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
@@ -104,8 +103,7 @@ h2 .s{font-size:14px;font-weight:700;color:var(--muted)}
 footer{margin-top:34px;padding-top:12px;border-top:1px solid var(--line);color:var(--dim);font-size:12px;line-height:1.65}
 
 /* 短い句は言葉の途中で折らない（読点・句点・空白でだけ折る。収まらない時だけどこでも） */
-.eyebrow,.lead,.q,.rule div,.say span,.tip,.j .jc,.j .jn,.tell .line{word-break:keep-all;overflow-wrap:anywhere}
-.nw{white-space:nowrap}
+.eyebrow,.lead,h2 .s,.q,.rule div,.tip,.j .jc,.j .jn,.tell .line{word-break:keep-all;overflow-wrap:anywhere}
 
 @media (max-width:640px){
   h1{font-size:25px}
@@ -146,8 +144,6 @@ footer{margin-top:34px;padding-top:12px;border-top:1px solid var(--line);color:v
   .tbl .th{font-size:7.5pt}
   .tbl .sig{font-size:9pt}
   .tbl .q{font-size:11pt}
-  .say{font-size:8.5pt;margin-top:2mm}
-  .say .k{font-size:7.5pt}
   .tip{font-size:8.5pt;margin-top:2mm}
   .judge{gap:3mm}
   .j{padding:2.5mm 3mm}
@@ -177,7 +173,7 @@ footer{margin-top:34px;padding-top:12px;border-top:1px solid var(--line);color:v
 </div>
 
 <section id="s1">
-  <h2><span class="n">1</span>見る<span class="s">当てはまったら、直さずに、その問いを返す</span></h2>
+  <h2><span class="n">1</span><span class="t">見る</span><span class="s">当てはまったら、直さずに、その問いを返す</span></h2>
   <div class="tbl">
     <div class="th">読んで、気づいたら</div><div class="th">返す問い（このまま言う）</div>
     <div class="sig">結論が、読めない</div><div class="q">「結論を、口頭で30秒で言うと？」</div>
@@ -186,15 +182,12 @@ footer{margin-top:34px;padding-top:12px;border-top:1px solid var(--line);color:v
     <div class="sig">言い回しが難しい</div><div class="q">「これを、知らない人にも分かるように言うと？」</div>
     <div class="sig">説明できなそうな言葉が並ぶ</div><div class="q">「この言葉は、どういう意味？」</div>
   </div>
-  <div class="say">
-    <span class="k ok">こう入る</span><span>「よくまとまってるね。」から。返す問いは、<span class="nw">1〜2問まで</span>。AIに問いを立てるのと、同じ要領で</span>
-    <span class="k ng">しない</span><span>何で作ったかを聞く／黙って自分で直す／「AIに聞いてみて」で返す</span>
-  </div>
+  <p class="tip"><b>評価は、普段の成果物と同じ。</b>良い所は良い、悪い所は悪い。見た目の整い方には惑わされない（整っていても、中身が良いとは限らない）。</p>
   <p class="tip">1つも当てはまらなければ、そのまま受ける。</p>
 </section>
 
 <section id="s2">
-  <h2><span class="n">2</span>決める<span class="s">答えを聞いて</span></h2>
+  <h2><span class="n">2</span><span class="t">決める</span><span class="s">答えを聞いて</span></h2>
   <div class="judge">
     <div class="j A"><div class="jt">受ける</div><div class="jc">全部、答えられた</div>
       <div class="jn">答えた中身が資料に無ければ、部下に足してもらって受け取る</div></div>
@@ -206,10 +199,10 @@ footer{margin-top:34px;padding-top:12px;border-top:1px solid var(--line);color:v
 </section>
 
 <section id="s3">
-  <h2><span class="n">3</span>伝える<span class="s">AIの使い方は、会社のガイドに任せる</span></h2>
+  <h2><span class="n">3</span><span class="t">伝える</span><span class="s">AIで、見た目だけの資料を作っていると感じたら</span></h2>
   <div class="tell">
     <span class="k">このまま言う</span>
-    <div class="line">「会社のAI利用ガイドを、よく読んで使って。<br>丸投げせず、自分の力がつく使い方で。」</div>
+    <div class="line">「会社のAI利用ガイドを、もう一度確かめて。<br>丸投げせず、自分の力をつけながら使って。」</div>
   </div>
   <p class="tip">ガイドがまだ無い会社は：<a href="https://ai-naiseika.github.io/guides/guide-tsukurikata.html">AI利用ガイドの作り方 ›</a></p>
   <p class="tip">慣れてきたら、1の5つを先に渡す（「自分で答えてから持ってきて」）。<b>自分が出す資料も、同じ5つで確かめてから。</b></p>
