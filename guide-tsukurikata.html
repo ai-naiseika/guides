@@ -115,6 +115,7 @@ footer{margin-top:34px;padding-top:12px;border-top:1px solid var(--line);color:v
   .copybox button{display:none}
   .copybox pre{font-size:9pt;line-height:1.5;padding:2mm 3mm}
   #frame{column-count:2;column-gap:6mm}
+  #frame .col2{display:block;break-before:column}   /* ■ 3 の見出しだけが左の列の下に取り残されないように */
   .copybox,.warn{break-inside:avoid}
   .links{font-size:8.5pt}
   footer{margin-top:4mm;padding-top:2mm;font-size:7pt;line-height:1.5}
@@ -148,21 +149,25 @@ footer{margin-top:34px;padding-top:12px;border-top:1px solid var(--line);color:v
 【AIを使って、何を得たいかを1行で】
 
 ■ 1. 使ってよいAI
-【会社が契約したAIの名前】だけを使う。個人で契約したAIに、会社の情報を入れない。
+【会社が契約したAIの名前】だけを使う。
+入れた内容を、AIの学習に使わせない設定にしてから使う。
+個人で契約したAIに、会社の情報を入れない。
 
 ■ 2. 入れてはいけない情報
 ・お客様の名前・連絡先
-・社外秘の数字（【原価・取引の条件など】）
 ・従業員の個人情報
-・【自社で足すもの】
+・ID・パスワード・トークンやAPIキーなどの鍵
+・自社で、クラウドにすら上げたくない情報（【自社で書く】）
 迷ったら入れない。
 
-■ 3. 使い方（丸投げしない）
+<span class="col2"></span>■ 3. 使い方（丸投げしない）
 人が判断できないものは、通さない。
 AIの答えは、確かめてから使うか、材料にして自分で決める。
-① AIに聞く前に、自分の答えを1行書く
-② 口で30秒、説明できないものは出さない
-③ 数字・人や会社の名前・引用・日付は、出どころを開いて確かめる
+① AIに聞く前に、自分の答えや意志を持つ
+② 説明できないものは、出さない・通さない
+③ 情報の出典は、確かめる。
+　 ネットの調べものは、使いどころに注意
+　（確かめる手間が増える）
 
 ■ 4. 中身の責任
 AIで作っても、手で作っても、中身の責任は出した人のもの。
